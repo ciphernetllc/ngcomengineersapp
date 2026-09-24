@@ -1,4 +1,4 @@
-package com.example.ngcomengineer
+package net.ngcom.ngcomengineers
 
 import io.flutter.embedding.android.FlutterActivity
 

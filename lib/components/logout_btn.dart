@@ -1,6 +1,5 @@
-// ignore_for_file: use_build_context_synchronously
-
 import 'package:flutter/material.dart';
+import 'package:flutter_background_service/flutter_background_service.dart';
 import 'package:provider/provider.dart';
 
 import '../services/api_service.dart';
@@ -9,14 +8,29 @@ import '../models/userdata.dart';
 class LogoutButton extends StatelessWidget {
   const LogoutButton({super.key});
 
-  void _logout(BuildContext context) async {
-    // Clear user data from provider (SharedPreferences)
+  static Future<void> performLogout(BuildContext context) async {
+    // Stop background location tracking service on logout
+    try {
+      final service = FlutterBackgroundService();
+      if (await service.isRunning()) {
+        service.invoke('stopService');
+      }
+    } catch (e) {
+      debugPrint("Error stopping background service on logout: $e");
+    }
+
+    // Clear user data from provider (SharedPreferences & ApiService)
     final userProvider = Provider.of<UserProvider>(context, listen: false);
     await userProvider.clearUserData();
-    // Clear credentials from the running ApiService instance
-    ApiService().clearCredentials();
+    await ApiService().clearCredentials();
     // Navigate to login screen and remove all previous routes
-    Navigator.pushNamedAndRemoveUntil(context, '/login', (route) => false);
+    if (context.mounted) {
+      Navigator.pushNamedAndRemoveUntil(context, '/login', (route) => false);
+    }
+  }
+
+  void _logout(BuildContext context) async {
+    await performLogout(context);
   }
 
   @override

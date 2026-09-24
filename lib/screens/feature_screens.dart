@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import '../components/logout_btn.dart';
 import '../services/api_service.dart';
 import '../theme/app_theme.dart';
 
@@ -430,7 +431,7 @@ class ProfileScreen extends StatelessWidget {
                 SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(
-                    onPressed: () => Navigator.pushReplacementNamed(context, '/login'),
+                    onPressed: () => LogoutButton.performLogout(context),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.red.withOpacity(0.1),
                       foregroundColor: Colors.red,

@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'models/userdata.dart';
 import 'screens/onboarding_screen.dart';
 import 'screens/splash_screen.dart';
 import 'screens/login_screen.dart';
 import 'screens/dashboard_screen.dart';
 import 'screens/feature_screens.dart';
+import 'screens/location_disclosure_screen.dart';
+import 'screens/privacy_policy_screen.dart';
 import 'services/api_service.dart';
 import 'services/background_location_service.dart';
 
 import 'screens/messages_screen.dart';
 import 'theme/app_theme.dart';
-import '../home/home.dart';
 import '../routes/installations.dart';
 import '../routes/surveys.dart';
 import '../routes/tickets.dart';
@@ -19,8 +21,12 @@ import '../routes/tickets.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Initialize the background service
-  await BackgroundLocationService.initializeService();
+  // Safely initialize background location service
+  try {
+    await BackgroundLocationService.initializeService();
+  } catch (e) {
+    debugPrint("BackgroundLocationService initialization error: $e");
+  }
 
   // Start the app immediately to prevent ANR (App Not Responding)
   runApp(
@@ -43,24 +49,65 @@ class NGComApp extends StatefulWidget {
 class _NGComAppState extends State<NGComApp> {
   final ApiService _apiService = ApiService();
   bool? _isLoggedIn;
+  bool? _hasLocationConsent;
 
   @override
   void initState() {
     super.initState();
-    _checkLoginStatus();
+    _checkAppState();
   }
 
-
-  Future<void> _checkLoginStatus() async {
+  Future<void> _checkAppState() async {
     final loggedIn = await _apiService.isLoggedIn();
+    final prefs = await SharedPreferences.getInstance();
+    final hasConsent = prefs.getBool('location_disclosure_accepted') ?? false;
+
     if (mounted) {
       setState(() {
         _isLoggedIn = loggedIn;
+        _hasLocationConsent = hasConsent;
       });
     }
   }
 
-  
+  Widget _getHomeScreen() {
+    // Still loading
+    if (_isLoggedIn == null || _hasLocationConsent == null) {
+      return const SplashScreen();
+    }
+
+    // Not logged in — go to login
+    if (!_isLoggedIn!) {
+      return const LoginScreen();
+    }
+
+    // Logged in but hasn't consented to location disclosure yet
+    if (!_hasLocationConsent!) {
+      return LocationDisclosureScreen(
+        onConsentGranted: () async {
+          // Start the background service now that we have consent + permissions
+          await BackgroundLocationService.startServiceAfterConsent();
+
+          if (mounted) {
+            setState(() {
+              _hasLocationConsent = true;
+            });
+          }
+        },
+        onConsentDeclined: () {
+          // Let the user proceed to dashboard without location tracking
+          if (mounted) {
+            setState(() {
+              _hasLocationConsent = true; // Mark as handled (declined)
+            });
+          }
+        },
+      );
+    }
+
+    // Fully ready
+    return const DashboardScreen();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -68,15 +115,11 @@ class _NGComAppState extends State<NGComApp> {
       title: 'NGCOM',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.lightTheme,
-      // Use a conditional home widget to manage the loading state.
-      home: _isLoggedIn == null 
-          ? const SplashScreen() 
-          : (_isLoggedIn! ? const DashboardScreen() : const LoginScreen()),
+      home: _getHomeScreen(),
       routes: {
         '/splash': (context) => const SplashScreen(),
         '/onboarding': (context) => const OnboardingScreen(),
         '/login': (context) => const LoginScreen(),
-        // '/dashboard': (context) => const MainScreen(),
         '/dashboard': (context) => const DashboardScreen(),
         '/messages': (context) => const MessagesScreen(),
         '/req': (context) => const ReqScreen(),
@@ -84,6 +127,7 @@ class _NGComAppState extends State<NGComApp> {
         '/tickets': (context) => const Tickets(),
         '/installations': (context) => const Installations(),
         '/profile': (context) => const ProfileScreen(),
+        '/privacy-policy': (context) => const PrivacyPolicyScreen(),
       },
     );
   }

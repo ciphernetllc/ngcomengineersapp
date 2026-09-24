@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../components/account_list_tile.dart';
+import '../components/logout_btn.dart';
 import '../constants.dart';
 import '../models/userdata.dart';
+import '../screens/privacy_policy_screen.dart';
 
 class ProfileSettingsPage extends StatefulWidget {
   const ProfileSettingsPage({super.key});
@@ -37,9 +40,6 @@ class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
           },
         ),
       ),
-      // bottomNavigationBar:
-      //     const BottomNavigationBarWidget(), // Include the bottom navigation bar here
-
       body: Consumer<UserProvider>(builder: (context, userProvider, child) {
         return SafeArea(
           child: SingleChildScrollView(
@@ -70,53 +70,66 @@ class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
                   ),
                 ),
                 const SizedBox(height: 20),
-                const Column(
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 25.0),
-                      child: Column(
-                        children: [
-                          CustomListTile(
-                            tileicons: '',
-                            maintext: 'Account Profile',
-                            subtext: 'Access your profile info',
-                          ),
-                          // CustomListTile(
-                          //   tileicons: '',
-                          //   maintext: 'Security',
-                          //   subtext: 'Change your security details',
-                          // ),
-                          // SizedBox(height: 7),
-                          // CustomListTile(
-                          //   tileicons: '',
-                          //   maintext: 'Notifications',
-                          //   subtext: 'Access all notification',
-                          // ),
-                          SizedBox(height: 7),
-                          CustomListTile(
-                            tileicons: '',
-                            maintext: 'About',
-                            subtext: 'Info about the application',
-                          ),
-                          SizedBox(height: 7),
-                          CustomListTile(
-                            tileicons: '',
-                            maintext: 'Help Center',
-                            subtext: 'Get help & support here',
-                          ),
-                          SizedBox(height: 7),
-                          CustomListTile(
-                            tileicons: '',
-                            maintext: 'Logout',
-                            subtext: '',
-                          ),
-                        ],
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                  child: Column(
+                    children: [
+                      const CustomListTile(
+                        tileicons: '',
+                        maintext: 'Account Profile',
+                        subtext: 'Access your profile info',
                       ),
-                    ),
-                  ],
+                      const SizedBox(height: 7),
+                      const CustomListTile(
+                        tileicons: '',
+                        maintext: 'About',
+                        subtext: 'Info about the application',
+                      ),
+                      const SizedBox(height: 7),
+                      const CustomListTile(
+                        tileicons: '',
+                        maintext: 'Help Center',
+                        subtext: 'Get help & support here',
+                      ),
+                      const SizedBox(height: 7),
+                      // Privacy Policy — required by Google Play
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => const PrivacyPolicyScreen(),
+                            ),
+                          );
+                        },
+                        child: const CustomListTile(
+                          tileicons: '',
+                          maintext: 'Privacy Policy',
+                          subtext: 'View our data handling practices',
+                        ),
+                      ),
+                      const SizedBox(height: 7),
+                      // Delete Account — required by Google Play
+                      GestureDetector(
+                        onTap: () => _showDeleteAccountDialog(context),
+                        child: const CustomListTile(
+                          tileicons: '',
+                          maintext: 'Delete Account',
+                          subtext: 'Permanently delete your account & data',
+                        ),
+                      ),
+                      const SizedBox(height: 7),
+                      GestureDetector(
+                        onTap: () => LogoutButton.performLogout(context),
+                        child: const CustomListTile(
+                          tileicons: '',
+                          maintext: 'Logout',
+                          subtext: 'Sign out of your account',
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-                // Divider(),
-                // Add more settings as needed
               ],
             ),
           ),
@@ -124,4 +137,54 @@ class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
       }),
     );
   }
+
+  void _showDeleteAccountDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext ctx) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+          title: const Text(
+            'Delete Account',
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+          content: const Text(
+            'Are you sure you want to delete your account? '
+            'This action is permanent and all your data will be removed. '
+            'You will be redirected to the account deletion page.',
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(ctx),
+              child: const Text('Cancel'),
+            ),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.red,
+                foregroundColor: Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
+              onPressed: () {
+                Navigator.pop(ctx);
+                _launchAccountDeletion();
+              },
+              child: const Text('Delete Account'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<void> _launchAccountDeletion() async {
+    final uri = Uri.parse(PrivacyPolicyScreen.accountDeletionUrl);
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri, mode: LaunchMode.externalApplication);
+    }
+  }
 }
+

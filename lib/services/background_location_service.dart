@@ -61,9 +61,12 @@ void onStart(ServiceInstance service) async {
       await prefs.reload(); // Critical: Pick up changes from the UI isolate
       
       final isLoggedIn = await apiService.isLoggedIn();
-      final username = prefs.getString('username');
+      debugPrint('DEBUG: Background service - isLoggedIn: $isLoggedIn');
+      
+      final String? usernameFromPrefs = prefs.getString('username');
+      final currentUsername = usernameFromPrefs?.trim() ?? ''; 
 
-      if (isLoggedIn && username != null && username.isNotEmpty) {
+      if (isLoggedIn && currentUsername.isNotEmpty && apiService.username.isNotEmpty) {
         if (service is AndroidServiceInstance) {
           service.setForegroundNotificationInfo(
             title: "NGCOM Tracking",
@@ -84,8 +87,6 @@ void onStart(ServiceInstance service) async {
         }
 
         LocationPermission permission = await Geolocator.checkPermission();
-        // For background services on Android, 'always' is highly recommended.
-        // 'whileInUse' may stop working as soon as the app is minimized.
         if (permission != LocationPermission.always && permission != LocationPermission.whileInUse) {
           if (service is AndroidServiceInstance) {
             service.setForegroundNotificationInfo(
@@ -108,10 +109,9 @@ void onStart(ServiceInstance service) async {
         try {
           position = await Geolocator.getCurrentPosition(
             desiredAccuracy: LocationAccuracy.high,
-            timeLimit: const Duration(seconds: 30), // Increased to 30 seconds
+            timeLimit: const Duration(seconds: 30),
           );
         } catch (e) {
-          // Fallback: If 30 seconds pass without a lock, try getting the last known position
           debugPrint("GPS Timeout, attempting last known position fallback...");
           position = await Geolocator.getLastKnownPosition();
           
@@ -128,13 +128,29 @@ void onStart(ServiceInstance service) async {
         }
 
         // 5. Update API
-        final response = await apiService.updateEngineerLocation(
-          username: username,
-          latitude: position.latitude,
-          longitude: position.longitude,
-        );
+        try {
+          if (currentUsername.isNotEmpty) {
+            final result = await apiService.updateEngineerLocation(
+              username: currentUsername,
+              latitude: position.latitude,
+              longitude: position.longitude,
+            );
 
-        // Update notification to show activity and prevent OS termination
+            if (result['message'] == 'Session Expired') {
+              if (service is AndroidServiceInstance) {
+                service.setForegroundNotificationInfo(
+                  title: "Session Expired",
+                  content: "Please log in again to continue tracking.",
+                );
+              }
+              return;
+            }
+          }
+        } catch (apiError) {
+          debugPrint("Background API Sync failed: $apiError");
+          if (apiError.toString().contains('UNAUTHORIZED')) return;
+        }
+
         if (service is AndroidServiceInstance) {
           final now = DateFormat('HH:mm:ss').format(DateTime.now());
           await service.setForegroundNotificationInfo(
@@ -169,34 +185,55 @@ void onStart(ServiceInstance service) async {
 }
 
 class BackgroundLocationService {
+  /// Called at app startup. Only starts the background service if the user
+  /// has previously granted consent AND location permissions are available.
+  /// Does NOT request permissions — that is handled by the disclosure screen.
   static Future<void> initializeService() async {
-    // 1. Check if location services are enabled
+    final prefs = await SharedPreferences.getInstance();
+    final hasConsented = prefs.getBool('location_disclosure_accepted') ?? false;
+
+    if (!hasConsented) {
+      debugPrint("BackgroundLocationService: User has not yet consented to location disclosure. Skipping service start.");
+      return;
+    }
+
+    // Check if location services are enabled
     bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
-      debugPrint("Location services are disabled.");
+      debugPrint("BackgroundLocationService: Location services are disabled.");
       return;
     }
 
-    // 2. Check and Request Permissions
+    // Check permissions (do NOT request them here)
     LocationPermission permission = await Geolocator.checkPermission();
-    
-    if (permission == LocationPermission.denied) {
-      permission = await Geolocator.requestPermission();
-      if (permission == LocationPermission.denied) {
-        debugPrint("Location permissions are denied.");
-        return;
-      }
-    }
-
-    if (permission == LocationPermission.deniedForever) {
-      debugPrint("Location permissions are permanently denied.");
+    if (permission == LocationPermission.denied || permission == LocationPermission.deniedForever) {
+      debugPrint("BackgroundLocationService: Location permissions not granted (status: $permission). Skipping service start.");
       return;
     }
 
-    // Note: On Android, if you need background location, you usually need 
-    // to request 'Always' permission specifically in settings or via a 
-    // separate prompt, but 'requestPermission' gets you 'While in Use'.
+    await _configureAndStartService();
+  }
 
+  /// Called after the user grants consent on the LocationDisclosureScreen
+  /// and system permissions are granted. Starts the background service.
+  static Future<void> startServiceAfterConsent() async {
+    bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      debugPrint("BackgroundLocationService: Location services are disabled.");
+      return;
+    }
+
+    LocationPermission permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied || permission == LocationPermission.deniedForever) {
+      debugPrint("BackgroundLocationService: Location permissions not granted after consent.");
+      return;
+    }
+
+    await _configureAndStartService();
+  }
+
+  /// Internal method to configure and start the Flutter background service.
+  static Future<void> _configureAndStartService() async {
     final service = FlutterBackgroundService();
 
     await service.configure(
@@ -214,5 +251,10 @@ class BackgroundLocationService {
         onBackground: onIosBackground,
       ),
     );
+
+    final isRunning = await service.isRunning();
+    if (!isRunning) {
+      await service.startService();
+    }
   }
 }

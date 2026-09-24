@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../services/api_service.dart';
 
 class UserProvider with ChangeNotifier {
   String? _apiKey;
@@ -68,7 +69,12 @@ class UserProvider with ChangeNotifier {
 
   Future<void> clearUserData() async {
     final prefs = await SharedPreferences.getInstance();
+    final hasConsent = prefs.getBool('location_disclosure_accepted');
     await prefs.clear();
+    if (hasConsent != null) {
+      await prefs.setBool('location_disclosure_accepted', hasConsent);
+    }
+    await ApiService().clearCredentials();
     _apiKey = null;
     _firstname = null;
     _lastname = null;

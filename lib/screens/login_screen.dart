@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../models/userdata.dart';
 import '../services/api_service.dart';
+import '../services/background_location_service.dart';
 import '../theme/app_theme.dart';
-import '../models/userdata.dart';
+import 'location_disclosure_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -42,12 +44,43 @@ class _LoginScreenState extends State<LoginScreen> {
         final username = userData['username'] as String;
 
         ApiService().setCredentials(username, apiKey);
-         final userProvider = Provider.of<UserProvider>(context, listen: false);
-        userProvider.saveUserData(result);
-        if (mounted) {
-          // Save the complete user data from the login response to the provider
-          await Provider.of<UserProvider>(context, listen: false).saveUserData(userData);
-          Navigator.pushReplacementNamed(context, '/dashboard');
+        final userProvider = Provider.of<UserProvider>(context, listen: false);
+        await userProvider.saveUserData(userData);
+
+        final prefs = await SharedPreferences.getInstance();
+        final hasConsent = prefs.getBool('location_disclosure_accepted') ?? false;
+
+        if (!hasConsent) {
+          if (mounted) {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => LocationDisclosureScreen(
+                  onConsentGranted: () async {
+                    await BackgroundLocationService.startServiceAfterConsent();
+                    if (context.mounted) {
+                      Navigator.pushReplacementNamed(context, '/dashboard');
+                    }
+                  },
+                  onConsentDeclined: () {
+                    if (context.mounted) {
+                      Navigator.pushReplacementNamed(context, '/dashboard');
+                    }
+                  },
+                ),
+              ),
+            );
+          }
+        } else {
+          try {
+            await BackgroundLocationService.initializeService();
+          } catch (e) {
+            debugPrint("Error initializing background service on login: $e");
+          }
+
+          if (mounted) {
+            Navigator.pushReplacementNamed(context, '/dashboard');
+          }
         }
       } else {
         if (mounted) {

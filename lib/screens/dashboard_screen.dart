@@ -3,6 +3,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_background_service/flutter_background_service.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../services/api_service.dart';
+import '../services/background_location_service.dart';
 import '../theme/app_theme.dart';
 import '../models/userdata.dart';
 import 'package:provider/provider.dart';
@@ -28,6 +29,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
   }
 
   Future<void> _checkServiceStatus() async {
+    try {
+      await BackgroundLocationService.initializeService();
+    } catch (e) {
+      debugPrint("Error initializing background service: $e");
+    }
     final running = await FlutterBackgroundService().isRunning();
     if (mounted) {
       setState(() {

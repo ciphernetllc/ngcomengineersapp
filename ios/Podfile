@@ -1,9 +1,5 @@
 # Uncomment this line to define a global platform for your project
-<<<<<<< HEAD
-# platform :ios, '15.0'
-=======
 platform :ios, '13.0'
->>>>>>> 5a625750440cdbf7e640b6bb2ed768397453a1ce
 
 # CocoaPods analytics sends network stats synchronously affecting flutter build latency.
 ENV['COCOAPODS_DISABLE_STATS'] = 'true'
@@ -15,11 +11,7 @@ project 'Runner', {
 }
 
 def flutter_root
-<<<<<<< HEAD
-  generated_xcode_build_settings_path = File.expand_path(File.join('..', 'Flutter', 'Generated.xcconfig'), __FILE__)
-=======
   generated_xcode_build_settings_path = File.expand_path(File.join('..', 'Flutter', 'Generated.xcconfig'), __dir__)
->>>>>>> 5a625750440cdbf7e640b6bb2ed768397453a1ce
   unless File.exist?(generated_xcode_build_settings_path)
     raise "#{generated_xcode_build_settings_path} must exist. If you're running pod install manually, make sure flutter pub get is executed first"
   end
@@ -37,24 +29,14 @@ flutter_ios_podfile_setup
 
 target 'Runner' do
   use_frameworks!
-<<<<<<< HEAD
-
-  flutter_install_all_ios_pods File.dirname(File.realpath(__FILE__))
-  target 'RunnerTests' do
-    inherit! :search_paths
-  end
-=======
   use_modular_headers!
 
   flutter_install_all_ios_pods File.dirname(File.realpath(__FILE__))
->>>>>>> 5a625750440cdbf7e640b6bb2ed768397453a1ce
 end
 
 post_install do |installer|
   installer.pods_project.targets.each do |target|
     flutter_additional_ios_build_settings(target)
-<<<<<<< HEAD
-=======
     
     target.build_configurations.each do |config|
       # Required for background location and standard plugins
@@ -74,6 +56,5 @@ post_install do |installer|
         'PERMISSION_PHOTOS=1',
       ]
     end
->>>>>>> 5a625750440cdbf7e640b6bb2ed768397453a1ce
   end
 end

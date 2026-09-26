@@ -132,11 +132,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
               Text(
                 'Hello,', // Adjusted for purple background
                 style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                      color: Colors.white.withOpacity(0.8), // Adjusted for purple background
+                      color: Colors.white.withValues(alpha: 0.8), // Adjusted for purple background
                     ),
               ),
               Text(
-                "${userProvider.firstname ?? 'User'}",
+                userProvider.firstname ?? 'User',
                 style: Theme.of(context).textTheme.displaySmall?.copyWith(
                       color: Colors.white,
                     ),
@@ -153,7 +153,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   Text(
                     _isServiceRunning ? 'Tracking Active' : 'Tracking Paused',
                     style: TextStyle(
-                      color: Colors.white.withOpacity(0.8),
+                      color: Colors.white.withValues(alpha: 0.8),
                       fontSize: 10,
                       fontWeight: FontWeight.w500,
                     ),
@@ -169,7 +169,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 Container(
                   padding: const EdgeInsets.all(12),
                   decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.2),
+                    color: Colors.white.withValues(alpha: 0.2),
                     borderRadius: BorderRadius.circular(16),
                   ),
                   child: const Icon(Icons.notifications_outlined, color: Colors.white),
@@ -232,7 +232,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     ).animate().fadeIn(delay: 400.ms);
   }
 
-  Widget _buildActionItem(String title, IconData icon, String route, {int? badgeCount}) {
+  Widget _buildActionItem(String title, FaIconData icon, String route, {int? badgeCount}) {
     return GestureDetector(
       onTap: () => Navigator.pushNamed(context, route),
       child: Column(
@@ -247,7 +247,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   borderRadius: BorderRadius.circular(16),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withOpacity(0.03),
+                      color: Colors.black.withValues(alpha: 0.03),
                       blurRadius: 10,
                       offset: const Offset(0, 4),
                     ),
@@ -323,7 +323,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     required String title,
     required String mainValue,
     required String mainLabel,
-    required IconData icon,
+    required FaIconData icon,
     required Color color,
     required List<Widget> subStats,
   }) {
@@ -334,7 +334,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.02),
+            color: Colors.black.withValues(alpha: 0.02),
             blurRadius: 10,
             offset: const Offset(0, 4),
           ),
@@ -351,10 +351,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 style: TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.bold,
-                  color: AppTheme.secondaryColor.withOpacity(0.8),
+                  color: AppTheme.secondaryColor.withValues(alpha: 0.8),
                 ),
               ),
-              Icon(icon, color: color, size: 20),
+              FaIcon(icon, color: color, size: 20),
             ],
           ),
           const Spacer(),
@@ -370,7 +370,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
             mainLabel,
             style: TextStyle(
               fontSize: 12,
-              color: AppTheme.secondaryColor.withOpacity(0.6),
+              color: AppTheme.secondaryColor.withValues(alpha: 0.6),
             ),
           ),
           const SizedBox(height: 12),
@@ -393,7 +393,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           '$label:',
           style: TextStyle(
             fontSize: 11,
-            color: AppTheme.secondaryColor.withOpacity(0.6),
+            color: AppTheme.secondaryColor.withValues(alpha: 0.6),
           ),
         ),
         const SizedBox(width: 4),
@@ -409,21 +409,21 @@ class _DashboardScreenState extends State<DashboardScreen> {
     );
   }
 
-  Widget _buildStatCard(String title, dynamic value, IconData icon, Color color) {
+  Widget _buildStatCard(String title, dynamic value, FaIconData icon, Color color) {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(20),
-        boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.02), blurRadius: 10, offset: const Offset(0, 4))],
+        boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.02), blurRadius: 10, offset: const Offset(0, 4))],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-            Text(title, style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: AppTheme.secondaryColor.withOpacity(0.8))),
-            Icon(icon, color: color, size: 20),
+            Text(title, style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: AppTheme.secondaryColor.withValues(alpha: 0.8))),
+            FaIcon(icon, color: color, size: 20),
           ]),
           Text(value?.toString() ?? '0', style: const TextStyle(fontSize: 32, fontWeight: FontWeight.bold, color: AppTheme.secondaryColor)),
         ],
@@ -437,7 +437,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
         color: Colors.white,
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: Colors.black.withValues(alpha: 0.05),
             blurRadius: 20,
             offset: const Offset(0, -5),
           ),
@@ -448,7 +448,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
         type: BottomNavigationBarType.fixed,
         backgroundColor: Colors.white,
         selectedItemColor: AppTheme.primaryColor,
-        unselectedItemColor: AppTheme.secondaryColor.withOpacity(0.4),
+        unselectedItemColor: AppTheme.secondaryColor.withValues(alpha: 0.4),
         showSelectedLabels: true,
         showUnselectedLabels: true,
         items: const [

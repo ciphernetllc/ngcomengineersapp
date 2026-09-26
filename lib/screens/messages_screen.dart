@@ -155,7 +155,7 @@ class _MessagesScreenState extends State<MessagesScreen> {
             isMe ? const BorderRadius.only(bottomRight: Radius.circular(16)) : const BorderRadius.only(bottomLeft: Radius.circular(16)),
           ),
           boxShadow: [
-            BoxShadow(color: Colors.black.withOpacity(0.02), blurRadius: 4, offset: const Offset(0, 2)),
+            BoxShadow(color: Colors.black.withValues(alpha: 0.02), blurRadius: 4, offset: const Offset(0, 2)),
           ],
         ),
         child: Column(
@@ -164,7 +164,7 @@ class _MessagesScreenState extends State<MessagesScreen> {
             if (!isMe)
               Text(
                 message['username'] ?? 'Admin',
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 11, color: AppTheme.secondaryColor.withOpacity(0.5)),
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 11, color: AppTheme.secondaryColor.withValues(alpha: 0.5)),
               ),
             const SizedBox(height: 4),
             Text(
@@ -174,7 +174,7 @@ class _MessagesScreenState extends State<MessagesScreen> {
             const SizedBox(height: 6),
             Text(
               timeStr,
-              style: TextStyle(fontSize: 9, color: isMe ? Colors.white.withOpacity(0.6) : Colors.grey),
+              style: TextStyle(fontSize: 9, color: isMe ? Colors.white.withValues(alpha: 0.6) : Colors.grey),
             ),
           ],
         ),
@@ -188,7 +188,7 @@ class _MessagesScreenState extends State<MessagesScreen> {
       decoration: BoxDecoration(
         color: Colors.white,
         boxShadow: [
-          BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 10, offset: const Offset(0, -5)),
+          BoxShadow(color: Colors.black.withValues(alpha: 0.05), blurRadius: 10, offset: const Offset(0, -5)),
         ],
       ),
       child: SafeArea(

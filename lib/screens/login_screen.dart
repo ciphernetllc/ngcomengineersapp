@@ -130,7 +130,7 @@ class _LoginScreenState extends State<LoginScreen> {
               Text(
                 'Sign in to manage your assignments.',
                 style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                      color: AppTheme.secondaryColor.withOpacity(0.5),
+                      color: AppTheme.secondaryColor.withValues(alpha: 0.5),
                     ),
               ).animate().fadeIn(delay: 300.ms).slideX(begin: -0.1, end: 0),
               const SizedBox(height: 48),

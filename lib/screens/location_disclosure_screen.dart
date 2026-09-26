@@ -50,7 +50,7 @@ class LocationDisclosureScreen extends StatelessWidget {
                           width: 80,
                           height: 80,
                           decoration: BoxDecoration(
-                            color: AppTheme.primaryColor.withOpacity(0.1),
+                            color: AppTheme.primaryColor.withValues(alpha: 0.1),
                             shape: BoxShape.circle,
                           ),
                           child: const Icon(
@@ -85,7 +85,7 @@ class LocationDisclosureScreen extends StatelessWidget {
                           'Please review before continuing',
                           textAlign: TextAlign.center,
                           style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                color: AppTheme.secondaryColor.withOpacity(0.6),
+                                color: AppTheme.secondaryColor.withValues(alpha: 0.6),
                               ),
                         ).animate().fadeIn(delay: 200.ms),
                       ),
@@ -180,7 +180,7 @@ class LocationDisclosureScreen extends StatelessWidget {
                         style: TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.w500,
-                          color: AppTheme.secondaryColor.withOpacity(0.6),
+                          color: AppTheme.secondaryColor.withValues(alpha: 0.6),
                         ),
                       ),
                     ),
@@ -211,7 +211,7 @@ class LocationDisclosureScreen extends StatelessWidget {
             width: 40,
             height: 40,
             decoration: BoxDecoration(
-              color: AppTheme.primaryColor.withOpacity(0.08),
+              color: AppTheme.primaryColor.withValues(alpha: 0.08),
               borderRadius: BorderRadius.circular(12),
             ),
             child: Icon(icon, size: 20, color: AppTheme.primaryColor),
@@ -234,7 +234,7 @@ class LocationDisclosureScreen extends StatelessWidget {
                   description,
                   style: TextStyle(
                     fontSize: 13,
-                    color: AppTheme.secondaryColor.withOpacity(0.65),
+                    color: AppTheme.secondaryColor.withValues(alpha: 0.65),
                     height: 1.4,
                   ),
                 ),

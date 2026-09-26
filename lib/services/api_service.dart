@@ -37,7 +37,7 @@ class ApiService {
     final uri = Uri.parse('$baseUrl$path').replace(queryParameters: query);
     final requestHeaders = {
       'Accept': 'application/json',
-      if (_apiKey != null) 'X-API-KEY': _apiKey!,
+      'X-API-KEY': ?_apiKey,
     };
     if (headers != null) {
       requestHeaders.addAll(headers);
@@ -51,7 +51,7 @@ class ApiService {
     final requestHeaders = {
       'Content-Type': 'application/json', // Default to JSON
       'Accept': 'application/json',
-      if (_apiKey != null) 'X-API-KEY': _apiKey!,
+      'X-API-KEY': ?_apiKey,
     };
     if (headers != null) {
       requestHeaders.addAll(headers);

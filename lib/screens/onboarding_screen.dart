@@ -71,7 +71,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       _sliderData[index]['subtitle']!,
                       textAlign: TextAlign.center,
                       style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                            color: AppTheme.secondaryColor.withOpacity(0.6),
+                            color: AppTheme.secondaryColor.withValues(alpha: 0.6),
                           ),
                     ).animate().fadeIn(delay: 400.ms).slideY(begin: 0.2, end: 0),
                   ],
@@ -117,7 +117,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                               },
                               child: Text(
                                 'Skip',
-                                style: TextStyle(color: AppTheme.secondaryColor.withOpacity(0.5)),
+                                style: TextStyle(color: AppTheme.secondaryColor.withValues(alpha: 0.5)),
                               ),
                             ),
                             GestureDetector(

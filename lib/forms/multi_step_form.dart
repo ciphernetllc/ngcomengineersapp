@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
@@ -9,7 +8,6 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'dart:convert';
 
-import '../components/my_button.dart';
 import '../models/userdata.dart';
 
 class MultiStepForm extends StatefulWidget {
@@ -274,7 +272,7 @@ class _Step1State extends State<Step1> {
                   const EdgeInsets.symmetric(horizontal: 10.0, vertical: 8.0),
               child: DropdownButtonFormField<String>(
                 decoration: customInputDecoration('Achievable'),
-                value: achievable,
+                initialValue: achievable,
                 onChanged: (String? newValue) {
                   setState(() {
                     achievable = newValue;
@@ -296,7 +294,7 @@ class _Step1State extends State<Step1> {
                   const EdgeInsets.symmetric(horizontal: 10.0, vertical: 8.0),
               child: DropdownButtonFormField<String>(
                 decoration: customInputDecoration('Fibre'),
-                value: isfibre,
+                initialValue: isfibre,
                 onChanged: (String? newValue) {
                   setState(() {
                     isfibre = newValue;
@@ -552,7 +550,7 @@ class _Step2State extends State<Step2> {
                   ? const CircularProgressIndicator()
                   : DropdownButtonFormField<String>(
                       decoration: customInputDecoration('Base Station'),
-                      value: btscoordinate,
+                      initialValue: btscoordinate,
                       onChanged: (String? newValue) {
                         setState(() {
                           widget.onDataChange('btscoordinate', newValue);
@@ -612,7 +610,7 @@ class _Step2State extends State<Step2> {
                   const EdgeInsets.symmetric(horizontal: 10.0, vertical: 8.0),
               child: DropdownButtonFormField<String>(
                 decoration: customInputDecoration('Mast Installed'),
-                value: isamastinstalled,
+                initialValue: isamastinstalled,
                 onChanged: (String? newValue) {
                   setState(() {
                     isamastinstalled = newValue;
@@ -748,7 +746,7 @@ class _Step3State extends State<Step3> {
                   const EdgeInsets.symmetric(horizontal: 10.0, vertical: 8.0),
               child: DropdownButtonFormField<String>(
                 decoration: customInputDecoration('Possible Obstacles'),
-                value: possibleobstaclesController,
+                initialValue: possibleobstaclesController,
                 onChanged: (String? newValue) {
                   setState(() {
                     possibleobstaclesController = newValue;
@@ -794,7 +792,7 @@ class _Step3State extends State<Step3> {
                   ? const CircularProgressIndicator()
                   : DropdownButtonFormField<String>(
                       decoration: customInputDecoration('Recommended Radio'),
-                      value: installationradio,
+                      initialValue: installationradio,
                       onChanged: (String? newValue) {
                         setState(() {
                           installationradio = newValue;

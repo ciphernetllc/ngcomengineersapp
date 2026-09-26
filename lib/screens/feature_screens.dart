@@ -69,7 +69,7 @@ class ChatScreen extends StatelessWidget {
                           ),
                           boxShadow: [
                             BoxShadow(
-                              color: Colors.black.withOpacity(0.02),
+                              color: Colors.black.withValues(alpha: 0.02),
                               blurRadius: 10,
                               offset: const Offset(0, 4),
                             ),
@@ -81,7 +81,7 @@ class ChatScreen extends StatelessWidget {
                             Text(
                               msg['username'] ?? 'Support',
                               style: TextStyle(
-                                color: isMe ? Colors.white70 : AppTheme.secondaryColor.withOpacity(0.5),
+                                color: isMe ? Colors.white70 : AppTheme.secondaryColor.withValues(alpha: 0.5),
                                 fontSize: 10,
                                 fontWeight: FontWeight.bold,
                               ),
@@ -104,7 +104,7 @@ class ChatScreen extends StatelessWidget {
                   color: Colors.white,
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withOpacity(0.05),
+                      color: Colors.black.withValues(alpha: 0.05),
                       blurRadius: 20,
                       offset: const Offset(0, -5),
                     ),
@@ -193,7 +193,7 @@ class ReqScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildReqItem(BuildContext context, String title, IconData icon, VoidCallback onTap) {
+  Widget _buildReqItem(BuildContext context, String title, FaIconData icon, VoidCallback onTap) {
     return Card(
       margin: const EdgeInsets.only(bottom: 16),
       child: ListTile(
@@ -202,10 +202,10 @@ class ReqScreen extends StatelessWidget {
         leading: Container(
           padding: const EdgeInsets.all(12),
           decoration: BoxDecoration(
-            color: AppTheme.primaryColor.withOpacity(0.1),
+            color: AppTheme.primaryColor.withValues(alpha: 0.1),
             borderRadius: BorderRadius.circular(12),
           ),
-          child: Icon(icon, color: AppTheme.primaryColor, size: 20),
+          child: FaIcon(icon, color: AppTheme.primaryColor, size: 20),
         ),
         title: Text(title, style: const TextStyle(fontWeight: FontWeight.bold)),
         trailing: const Icon(Icons.chevron_right),
@@ -245,11 +245,11 @@ class SiteSurveyScreen extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(FontAwesomeIcons.mapLocationDot, size: 80, color: AppTheme.primaryColor.withOpacity(0.2)),
+                  FaIcon(FontAwesomeIcons.mapLocationDot, size: 80, color: AppTheme.primaryColor.withValues(alpha: 0.2)),
                   const SizedBox(height: 24),
                   const Text('No pending surveys', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
                   const SizedBox(height: 8),
-                  Text('Your scheduled surveys will appear here.', style: TextStyle(color: AppTheme.secondaryColor.withOpacity(0.5))),
+                  Text('Your scheduled surveys will appear here.', style: TextStyle(color: AppTheme.secondaryColor.withValues(alpha: 0.5))),
                 ],
               ),
             );
@@ -314,7 +314,7 @@ class TicketScreen extends StatelessWidget {
                           Container(
                             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                             decoration: BoxDecoration(
-                              color: tkt['status'] == 'Open' ? Colors.orange.withOpacity(0.1) : Colors.green.withOpacity(0.1),
+                              color: tkt['status'] == 'Open' ? Colors.orange.withValues(alpha: 0.1) : Colors.green.withValues(alpha: 0.1),
                               borderRadius: BorderRadius.circular(20),
                             ),
                             child: Text(
@@ -360,7 +360,7 @@ class InstallationScreen extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(FontAwesomeIcons.tools, size: 80, color: AppTheme.primaryColor.withOpacity(0.2)),
+                  FaIcon(FontAwesomeIcons.tools, size: 80, color: AppTheme.primaryColor.withValues(alpha: 0.2)),
                   const SizedBox(height: 24),
                   const Text('No pending installations', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
                 ],
@@ -379,10 +379,10 @@ class InstallationScreen extends StatelessWidget {
                   leading: Container(
                     padding: const EdgeInsets.all(12),
                     decoration: BoxDecoration(
-                      color: Colors.blue.withOpacity(0.1),
+                      color: Colors.blue.withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(12),
                     ),
-                    child: const Icon(FontAwesomeIcons.tools, color: Colors.blue, size: 20),
+                    child: const FaIcon(FontAwesomeIcons.tools, color: Colors.blue, size: 20),
                   ),
                   title: Text('Install ID: ${item['id']}', style: const TextStyle(fontWeight: FontWeight.bold)),
                   subtitle: Text('Status: ${item['status']}'),
@@ -421,7 +421,7 @@ class ProfileScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 24),
                 Text(profile['username'] ?? 'User', style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
-                Text(profile['email'] ?? 'No email provided', style: TextStyle(color: AppTheme.secondaryColor.withOpacity(0.5))),
+                Text(profile['email'] ?? 'No email provided', style: TextStyle(color: AppTheme.secondaryColor.withValues(alpha: 0.5))),
                 const SizedBox(height: 40),
                 _buildProfileItem(Icons.person_outline, 'Personal Information'),
                 _buildProfileItem(Icons.history, 'Billing History'),
@@ -433,7 +433,7 @@ class ProfileScreen extends StatelessWidget {
                   child: ElevatedButton(
                     onPressed: () => LogoutButton.performLogout(context),
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.red.withOpacity(0.1),
+                      backgroundColor: Colors.red.withValues(alpha: 0.1),
                       foregroundColor: Colors.red,
                       elevation: 0,
                     ),
@@ -456,7 +456,7 @@ class ProfileScreen extends StatelessWidget {
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.02),
+            color: Colors.black.withValues(alpha: 0.02),
             blurRadius: 10,
             offset: const Offset(0, 4),
           ),

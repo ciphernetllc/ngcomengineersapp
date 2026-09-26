@@ -29,7 +29,7 @@ class AppTheme {
         headlineMedium: GoogleFonts.poppins(fontWeight: FontWeight.w600, fontSize: 20, color: secondaryColor),
         titleLarge: GoogleFonts.poppins(fontWeight: FontWeight.w600, fontSize: 18, color: secondaryColor),
         bodyLarge: GoogleFonts.poppins(fontSize: 16, color: secondaryColor),
-        bodyMedium: GoogleFonts.poppins(fontSize: 14, color: secondaryColor.withOpacity(0.8)),
+        bodyMedium: GoogleFonts.poppins(fontSize: 14, color: secondaryColor.withValues(alpha: 0.8)),
       ),
       appBarTheme: AppBarTheme(
         backgroundColor: surfaceColor,
@@ -68,13 +68,13 @@ class AppTheme {
           borderRadius: BorderRadius.circular(16),
           borderSide: const BorderSide(color: primaryColor, width: 1.5),
         ),
-        labelStyle: GoogleFonts.poppins(color: secondaryColor.withOpacity(0.6)),
-        hintStyle: GoogleFonts.poppins(color: secondaryColor.withOpacity(0.4)),
+        labelStyle: GoogleFonts.poppins(color: secondaryColor.withValues(alpha: 0.6)),
+        hintStyle: GoogleFonts.poppins(color: secondaryColor.withValues(alpha: 0.4)),
       ),
       cardTheme: CardThemeData(
         color: surfaceColor,
         elevation: 2,
-        shadowColor: Colors.black.withOpacity(0.05),
+        shadowColor: Colors.black.withValues(alpha: 0.05),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       ),
     );

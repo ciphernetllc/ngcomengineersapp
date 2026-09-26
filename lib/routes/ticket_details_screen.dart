@@ -358,7 +358,7 @@ class _TicketDetailsScreenState extends State<TicketDetailsScreen> {
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: Colors.black.withValues(alpha: 0.05),
             blurRadius: 8,
             offset: const Offset(0, 2),
           )
@@ -383,7 +383,7 @@ class _TicketDetailsScreenState extends State<TicketDetailsScreen> {
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                       decoration: BoxDecoration(
-                        color: statusColor.withOpacity(0.12),
+                        color: statusColor.withValues(alpha: 0.12),
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: Text(
@@ -406,7 +406,7 @@ class _TicketDetailsScreenState extends State<TicketDetailsScreen> {
             Container(
               width: double.infinity,
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-              color: Colors.green.withOpacity(0.08),
+              color: Colors.green.withValues(alpha: 0.08),
               child: Row(
                 children: [
                   const Icon(Icons.circle, color: Colors.green, size: 8),
@@ -437,7 +437,7 @@ class _TicketDetailsScreenState extends State<TicketDetailsScreen> {
                     child: Container(
                       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                       decoration: BoxDecoration(
-                        color: AppTheme.primaryColor.withOpacity(0.1),
+                        color: AppTheme.primaryColor.withValues(alpha: 0.1),
                         borderRadius: BorderRadius.circular(16),
                       ),
                       child: const Row(
@@ -485,7 +485,7 @@ class _TicketDetailsScreenState extends State<TicketDetailsScreen> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text('Customer Note:', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12, color: AppTheme.secondaryColor.withOpacity(0.8))),
+                          Text('Customer Note:', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12, color: AppTheme.secondaryColor.withValues(alpha: 0.8))),
                           const SizedBox(height: 4),
                           Text(customerNote, style: const TextStyle(fontSize: 12, color: AppTheme.secondaryColor)),
                         ],
@@ -505,11 +505,11 @@ class _TicketDetailsScreenState extends State<TicketDetailsScreen> {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Icon(icon, size: 18, color: AppTheme.secondaryColor.withOpacity(0.6)),
+        Icon(icon, size: 18, color: AppTheme.secondaryColor.withValues(alpha: 0.6)),
         const SizedBox(width: 12),
         Text(
           '$label: ',
-          style: TextStyle(fontWeight: FontWeight.w600, color: AppTheme.secondaryColor.withOpacity(0.8)),
+          style: TextStyle(fontWeight: FontWeight.w600, color: AppTheme.secondaryColor.withValues(alpha: 0.8)),
         ),
         Expanded(
           child: Text(
@@ -566,7 +566,7 @@ class _TicketDetailsScreenState extends State<TicketDetailsScreen> {
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 12,
-                color: isMe ? Colors.white.withOpacity(0.8) : AppTheme.secondaryColor,
+                color: isMe ? Colors.white.withValues(alpha: 0.8) : AppTheme.secondaryColor,
               ),
             ),
             const SizedBox(height: 4),
@@ -579,7 +579,7 @@ class _TicketDetailsScreenState extends State<TicketDetailsScreen> {
               messageTime,
               style: TextStyle(
                 fontSize: 10,
-                color: isMe ? Colors.white.withOpacity(0.6) : Colors.grey,
+                color: isMe ? Colors.white.withValues(alpha: 0.6) : Colors.grey,
               ),
             ),
           ],
@@ -595,7 +595,7 @@ class _TicketDetailsScreenState extends State<TicketDetailsScreen> {
         color: Colors.white,
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: Colors.black.withValues(alpha: 0.05),
             blurRadius: 10,
             offset: const Offset(0, -5),
           )
@@ -630,8 +630,8 @@ class _TicketDetailsScreenState extends State<TicketDetailsScreen> {
                 borderRadius: BorderRadius.circular(12),
                 border: Border.all(
                   color: _selectedDepartmentRole == null
-                      ? Colors.orange.withOpacity(0.8)
-                      : AppTheme.primaryColor.withOpacity(0.4),
+                      ? Colors.orange.withValues(alpha: 0.8)
+                      : AppTheme.primaryColor.withValues(alpha: 0.4),
                 ),
               ),
               child: DropdownButtonHideUnderline(
@@ -648,7 +648,7 @@ class _TicketDetailsScreenState extends State<TicketDetailsScreen> {
                         'Choose department role to forward ticket...',
                         style: TextStyle(
                           fontSize: 13,
-                          color: AppTheme.secondaryColor.withOpacity(0.7),
+                          color: AppTheme.secondaryColor.withValues(alpha: 0.7),
                         ),
                       ),
                     ],

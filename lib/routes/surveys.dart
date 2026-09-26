@@ -1,12 +1,9 @@
 // ignore_for_file: unused_local_variable
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
-import '../bottom_nav/bottom_nav.dart';
-import '../constants.dart';
 import '../forms/multi_step_form.dart';
 import '../models/userdata.dart';
 import '../services/api_service.dart';
@@ -155,7 +152,7 @@ class _SurveysState extends State<Surveys> {
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: Colors.black.withValues(alpha: 0.05),
             blurRadius: 10,
             offset: const Offset(0, 4),
           ),
@@ -283,7 +280,7 @@ class _SurveysState extends State<Surveys> {
           borderRadius: BorderRadius.circular(16),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.03),
+              color: Colors.black.withValues(alpha: 0.03),
               blurRadius: 10,
               offset: const Offset(0, 4),
             ),
@@ -299,7 +296,7 @@ class _SurveysState extends State<Surveys> {
                   padding:
                       const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                   decoration: BoxDecoration(
-                    color: AppTheme.primaryColor.withOpacity(0.1),
+                    color: AppTheme.primaryColor.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Text(
@@ -367,7 +364,7 @@ class _SurveysState extends State<Surveys> {
                 Container(
                   padding: const EdgeInsets.all(6),
                   decoration: BoxDecoration(
-                    color: AppTheme.secondaryColor.withOpacity(0.05),
+                    color: AppTheme.secondaryColor.withValues(alpha: 0.05),
                     shape: BoxShape.circle,
                   ),
                   child: const Icon(Icons.chevron_right,
